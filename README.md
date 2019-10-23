@@ -1,2 +1,4 @@
 # kettle_manager
 kettle任务的web管理系统
+
+专门用来调度和监控由kettle客户端创建的job和transformation。整体的框架是由springboot+kettle+angularJs整合而成，通过调用kettle的API来执行转换和作业，并且使用quartz框架完成定时任务的调度工作，并提供相应的web管理界面。
