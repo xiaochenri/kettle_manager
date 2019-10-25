@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" ng-app="addApp">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Kettle任务管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/file/add.js"></script>
+    </head>
+    <body ng-controller="addController" ng-init="init()">
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form>
+                    <div class="layui-form-item" style="margin-left: 15%;">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>任务类型</label>
+                        <div class="layui-input-inline">
+                            <label>
+                                <select ng-model="queryModel.jobType" ng-change="getJobList()" style="line-height: 1.3;height: 30px;width: 150px;">
+                                    <option value="1">作业</option>
+                                    <option value="2">转换</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item"  style="margin-left: 15%;">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>任务路径</label>
+                        <div class="layui-input-inline">
+                            <label>
+                                <select ng-model="queryModel.path" ng-change="getJobList()" style="line-height: 1.3;height: 30px;width: 150px;">
+                                    <option ng-repeat="dir in dirList" value="{{dir}}">{{dir}}</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layui-form-item"  style="margin-left: 15%;">
+                        <label class="layui-form-label">
+                            <span class="x-red">*</span>任务名称</label>
+                        <div class="layui-input-inline" style="margin-bottom: 15px">
+                            <label>
+                                <select ng-model="queryModel.jobName" style="line-height: 1.3;height: 30px;width: 150px;">
+                                    <option ng-if="queryModel.jobType=='1'" ng-repeat="job in jobList" value="{{job.jobName}}">{{job.jobName}}</option>
+                                    <option ng-if="queryModel.jobType=='2'" ng-repeat="job in jobList" value="{{job.transName}}">{{job.transName}}</option>
+                                </select>
+                            </label>
+                        </div>
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>任务时间规则</label>
+                        <div class="layui-input-inline">
+                            <input ng-model="queryModel.cron" type="text" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">参照quartz的CronTrigger配置</div></div>
+                    </div>
+                    <div class="layui-form-item"  style="margin-left: 25%;">
+                        <label class="layui-form-label"></label>
+                        <button class="layui-btn" lay-filter="add" lay-submit="" ng-click="addQuartzJob()">增加</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <script>layui.use(['form', 'layer','jquery'],
+        function() {
+        });</script>
+</html>

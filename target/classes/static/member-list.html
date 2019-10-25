@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" ng-app="quartzJobApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Kettle任务管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/file/quartzJob.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body ng-controller="quartzJobController" ng-init="init()">
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">定时任务</a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       ng-click="getQuartzJobList()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <button class="layui-btn" ng-click="openTab('添加任务','./member-add.html',600,400)"><i
+                            class="layui-icon"></i>添加
+                    </button>
+                </div>
+                <div class="layui-card-body layui-table-body layui-table-main">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>名称</th>
+                            <th>路径</th>
+                            <th>时间规则</th>
+                            <th>创建时间</th>
+                            <th>类型</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-if="jobList.length<1">
+                            <td colspan="10" class="center" style="text-align: center">未查询出记录！</td>
+                        </tr>
+                        <tr ng-repeat="item in jobList">
+                            <td>{{$index + 1}}</td>
+                            <td ng-bind="item.jobName"></td>
+                            <td ng-bind="item.path"></td>
+                            <td ng-bind="item.cron"></td>
+                            <td ng-bind="item.createDate"></td>
+                            <td ng-if="item.jobType == '1'">作业</td>
+                            <td ng-if="item.jobType == '2'">转换</td>
+                            <td ng-if="item.jobStatus == '0'">未启动</td>
+                            <td ng-if="item.jobStatus == '1'">已启动</td>
+                            <td class="td-manage">
+                                <a title="手动执行" href="javascript:;"
+                                   ng-click="executeJobByHand(item.id)">
+                                    <i class="layui-icon layui-icon-fire" style="font-size: 20px"></i>
+                                </a>
+                                <a ng-if="item.jobStatus == '0'" title="启动" href="javascript:;"
+                                   ng-click="executeJob(item.id)">
+                                    <i class="layui-icon layui-icon-play" style="font-size: 20px"></i>
+                                </a>
+                                <a ng-if="item.jobStatus == '1'" title="停止" href="javascript:;"
+                                   ng-click="stopJob(item.id)">
+                                    <i class="layui-icon layui-icon-pause" style="font-size: 20px"></i>
+                                </a>
+                                <a title="删除" ng-click="removeQuartzJob(item.id)" href="javascript:;">
+                                    <i class="layui-icon" style="font-size: 20px">&#xe640;</i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    layui.use(['laydate', 'form'], function () {
+    });
+</script>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" ng-app="logApp">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Kettle任务管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <script type="text/javascript" src="js/angular.min.js"></script>
+        <script type="text/javascript" src="js/file/log.js"></script>
+    </head>
+    
+    <body ng-controller="logController" ng-init="init()">
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a href="">日志</a>
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form class="layui-form layui-col-space5">
+                                <div class="layui-input-inline layui-show-xs-block">
+                                    <input type="text" ng-model="name" name="username" placeholder="请输入任务名称" autocomplete="off" class="layui-input"></div>
+                                <div class="layui-input-inline layui-show-xs-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="sreach" ng-click="getLogList(1)">
+                                        <i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">序号</th>
+                                        <th width="10%">名称</th>
+                                        <th width="10%">路径</th>
+                                        <th width="15%">开始时间</th>
+                                        <th width="15%">结束时间</th>
+                                        <th width="10%">运行状态</th>
+                                        <th width="30%">kettle日志</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-if="logList.length<1">
+                                    <td colspan="10" class="center" style="text-align: center">未查询出记录！</td>
+                                </tr>
+                                    <tr ng-repeat="item in logList">
+                                        <td>{{$index + 1}}</td>
+                                        <td ng-bind="item.jobName"></td>
+                                        <td ng-bind="item.path"></td>
+                                        <td ng-bind="item.startTime"></td>
+                                        <td ng-bind="item.endTime"></td>
+                                        <td ng-bind="item.runStatus"></td>
+                                        <td ng-bind="item.jobLogText"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="layui-card-body ">
+                            <div class="page">
+                                <div>
+                                    <a class="prev" href="" ng-click="prePage()">&lt;&lt;</a>
+                                    <a ng-repeat="a in logPageList" ng-style="{'color':a === page.currentPageIndex?'#0B75D0':'black'}" ng-click="toPgae(a)">{{a}}</a>
+                                    <a class="next" href="" ng-click="nextPage()">&gt;&gt;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
